@@ -1,60 +1,34 @@
 import React,{Component} from 'react';
+import {Layout, Form } from 'antd';
 import './App.css';
+import TodoForm from './Form';
+
+const { Header, Content } = Layout;
+const FillingForm = Form.create({})(TodoForm);
 
 class App extends Component {
 
 	state = {
-		todoList :[]
+		todoList:[]
+	}
+	callBackFunction = (childData) => {
+		this.setState({todoList: childData})
 	}
 	render(){
-	    return (
-	    	<div>
-		        <div className="jumbotron jumbotron-fluid py-2">
-		        	<div className="container">
-			        	<h1 className="display-2">Todo app</h1>
-			        </div>
-			    </div>
-			    <form className="mb-3" onSubmit={this.handleSubmit}>
-			    	<div className="input-group">
-						<input type="text" name="todoTask" className="form-control" placeholder="Please, enter your worries" autoComplete="off"/>
-						<div className="input-group-append">
-							<button type="submit" className="btn btn-outline-success">Add</button>
-						</div>
-					</div>
-			    </form>
-
-			    <ul className="list-group">
-			    	{
-			    		this.state.todoList.map(
-			    			(item, index) =>{
-			    				return <li className="list-group-item" key={index}>
-			    					{item}
-			    					<button className="btn btn-sm btn-outline-danger float-right" onClick={(event) => {this.deleteTodoTask(event, index)}}>Delete</button>
-			    				</li>
-			    			}
-			    		)
-			    	}
-			    </ul>
+    return (
+    	<div className='App'>
+				<Layout className='layout'>
+					<Header className='header'>
+						<h1 className='title'> Todo App</h1>
+					</Header>
+					<Content className='content'>
+						<FillingForm parentCallback = {this.callBackFunction} />
+						<p> {this.state.todoList} </p>
+					</Content>
+				</Layout>   
 			</div>
 		);
 	}
-	handleSubmit = (event) => {
-		var taskDesc = event.target.elements.todoTask.value;
-		if(taskDesc.length > 0){
-			this.setState({
-				todoList:[...this.state.todoList, taskDesc]
-			})
-			event.target.reset();
-		}
-		event.preventDefault();
-	}
-	deleteTodoTask = (event, index) => {
-		var taskArray = [...this.state.todoList]
-		taskArray.splice(index, 1)
-		this.setState({todoList:taskArray})
-	}
 }
-
-
 
 export default App;
