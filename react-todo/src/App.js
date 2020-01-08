@@ -1,9 +1,9 @@
 import React,{Component} from 'react';
-import {Layout, Form } from 'antd';
+import {Layout, Form, List, Button } from 'antd';
 import './App.css';
 import TodoForm from './Form';
 
-const { Header, Content } = Layout;
+const { Header, Content, Footer } = Layout;
 const FillingForm = Form.create({})(TodoForm);
 
 class App extends Component {
@@ -12,7 +12,9 @@ class App extends Component {
 		todoList:[]
 	}
 	callBackFunction = (childData) => {
-		this.setState({todoList: childData})
+		this.setState({
+			todoList:[...this.state.todoList, childData]
+		})
 	}
 	render(){
     return (
@@ -23,8 +25,14 @@ class App extends Component {
 					</Header>
 					<Content className='content'>
 						<FillingForm parentCallback = {this.callBackFunction} />
-						<p> {this.state.todoList} </p>
 					</Content>
+					<Footer>
+						<List
+							bordered
+							dataSource={this.state.todoList}
+							renderItem={item => <List.Item>{item}<Button type='danger'>Delete</Button></List.Item>}
+						/>
+					</Footer>
 				</Layout>   
 			</div>
 		);
