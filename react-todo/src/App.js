@@ -9,12 +9,22 @@ const FillingForm = Form.create({})(TodoForm);
 class App extends Component {
 
 	state = {
-		todoList:[]
+		todoList:[],
+	}
+	componentDidMount(){
+		fetch('/users')
+			.then(res => res.json())
+			.then(users => this.setState({ users }));
 	}
 	callBackFunction = (childData) => {
 		this.setState({
 			todoList:[...this.state.todoList, childData]
 		})
+	}
+	deleteTodoTask = (event, uid) => {
+		var taskArray = [...this.state.todoList]
+		taskArray.splice(uid, 1)
+		this.setState({todoList:taskArray})
 	}
 	render(){
     return (
@@ -30,7 +40,14 @@ class App extends Component {
 						<List
 							bordered
 							dataSource={this.state.todoList}
-							renderItem={item => <List.Item>{item}<Button type='danger'>Delete</Button></List.Item>}
+							kexExtractor={item=>item.id}
+							renderItem={(item, index) => (
+								<List.Item>
+									{item}
+									<Button type='danger' onClick={(event) => {this.deleteTodoTask(event, index)}}>
+										Delete
+									</Button>
+								</List.Item>)}
 						/>
 					</Footer>
 				</Layout>   
