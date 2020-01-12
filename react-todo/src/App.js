@@ -14,7 +14,6 @@ class App extends Component {
 	componentDidMount(){
 		fetch('/users')
 			.then(res => res.json())
-			.then(users => this.setState({ users }));
 	}
 	callBackFunction = (childData) => {
 		this.setState({
@@ -36,11 +35,11 @@ class App extends Component {
 					<Content className='content'>
 						<FillingForm parentCallback = {this.callBackFunction} />
 					</Content>
-					<Footer>
+					<Footer className='footer'>
 						<List
+							size='small'
 							bordered
 							dataSource={this.state.todoList}
-							kexExtractor={item=>item.id}
 							renderItem={(item, index) => (
 								<List.Item>
 									{item}

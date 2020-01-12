@@ -17,10 +17,15 @@
   text-align: center;
   font-size: 3rem;
 }
-/*.content{
-  width: 45%;
-  margin: 1rem 3rem;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}*/
+.content{
+  margin: 2rem 0;
+}
+.footer{
+  width: 35%;
+}
+.footer li{
+  text-align: left;
+}
+.footer button{
+  align-content: 
+}
