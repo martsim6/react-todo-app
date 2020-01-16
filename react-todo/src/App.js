@@ -11,10 +11,10 @@ class App extends Component {
 	state = {
 		todoList:[],
 	}
-	componentDidMount(){
-		fetch('/users')
-			.then(res => res.json())
-	}
+	// componentDidMount(){
+	// 	fetch('/users')
+	// 		.then(res => res.json())
+	// }
 	callBackFunction = (childData) => {
 		this.setState({
 			todoList:[...this.state.todoList, childData]
