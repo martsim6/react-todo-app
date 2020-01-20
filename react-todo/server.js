@@ -14,37 +14,25 @@ const knex = require('knex') ({
 		charset: 'utf8'
 	}
 })
-
 const bookshelf = require('bookshelf')(knex)
-
 const Tasks = bookshelf.model('Tasks', {
 	tableName: 'tasks'
 })
-
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(bodyParser);
-
+app.use(bodyParser.urlencoded({
+	extended: true
+}));
+app.use(bodyParser.json());
 app.use(cors());
 
-app.get('/lacko', function(req, res){
-	res.json([
-		{id:1, username: 'lacko'},
-		{id:2, username: 'packo'}
-	])	
-});
-
 app.post('/test', function(req, res){
-	console.log(req.params);
-	console.log(req.body);
+	console.log(req.body['todoText']);
+	new Tasks({todoText: req.body['todoText']}).save()
 })
-
-app.get('/', function(req, res) {
-	res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
-
+// app.get('/', function(req, res) {
+// 	res.sendFile(path.join(__dirname, 'build', 'index.html'));
+// });
 app.listen(process.env.PORT || 8080);
-
 // new Tasks({text: 'lacko'}).save().then(console.log)
 // 	.catch(console.log)
-
 console.log('lacko');
