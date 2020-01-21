@@ -27,12 +27,14 @@ app.use(cors());
 
 app.post('/test', function(req, res){
 	console.log(req.body['todoText']);
-	new Tasks({todoText: req.body['todoText']}).save()
+	// new Tasks({text: req.body['todoText']}).save()
 })
+// app.get('/text' function (req, res) {
+	
+// })
 // app.get('/', function(req, res) {
 // 	res.sendFile(path.join(__dirname, 'build', 'index.html'));
 // });
 app.listen(process.env.PORT || 8080);
-// new Tasks({text: 'lacko'}).save().then(console.log)
-// 	.catch(console.log)
-console.log('lacko');
+
+console.log('start');

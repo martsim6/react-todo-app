@@ -2,7 +2,6 @@ import React,{Component} from 'react';
 import {Layout, Form, List, Button } from 'antd';
 import './App.css';
 import TodoForm from './Form';
-
 const { Header, Content, Footer } = Layout;
 const FillingForm = Form.create({})(TodoForm);
 
