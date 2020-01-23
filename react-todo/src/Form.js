@@ -36,7 +36,7 @@ class TodoForm extends Component{
           {getFieldDecorator('todoTask',{
             rules: [{required: false}],
           })(
-          <Input name='todoTask' placeholder='Please, enter your worries.' />
+          <Input placeholder='Please, enter your worries.' />
           )}        
         </Form.Item>
         <Form.Item>

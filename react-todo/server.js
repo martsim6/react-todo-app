@@ -28,13 +28,28 @@ app.use(cors());
 app.post('/test', function(req, res){
 	console.log(req.body['todoText']);
 	// new Tasks({text: req.body['todoText']}).save()
+	res.send('lacko');
 })
-// app.get('/text' function (req, res) {
-	
-// })
-// app.get('/', function(req, res) {
-// 	res.sendFile(path.join(__dirname, 'build', 'index.html'));
+
+// Tasks.count().then((count) => {
+// 	console.log(`mas tam ${count} taskov`);
+// }).catch((err) =>{
+// 	console.log(err);
+// }).finally(() => {
+// 	knex.destroy();
 // });
+
+// async function fetch_all() {
+// 	try {
+// 		let vals = await Tasks.fetchAll();
+// 		console.log(vals.toJSON());
+// 	} catch(e) {
+// 		console.log(`Failed to fetch data: ${e}`);
+// 	} finally {
+// 		knex.destroy();
+// 	}
+// }
+// fetch_all();
 app.listen(process.env.PORT || 8080);
 
 console.log('start');
