@@ -24,6 +24,7 @@ class App extends Component {
 		taskArray.splice(uid, 1)
 		this.setState({todoList:taskArray})
 	}
+	
 	render(){
     return (
     	<div className='App'>

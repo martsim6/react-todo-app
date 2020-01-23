@@ -31,6 +31,11 @@ app.post('/test', function(req, res){
 	res.send('lacko');
 })
 
+app.get('/task/add', (req, res) => {
+	const { text } = req.query;
+	console.log(text);
+})
+
 // Tasks.count().then((count) => {
 // 	console.log(`mas tam ${count} taskov`);
 // }).catch((err) =>{
