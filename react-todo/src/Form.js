@@ -3,8 +3,6 @@ import React, { Component } from 'react';
 
 class TodoForm extends Component{
 
-
-
   sendData = (message) => {
     this.props.parentCallback(message);
   }
@@ -12,9 +10,20 @@ class TodoForm extends Component{
   handleSubmit = (e) => {
     const { form } = this.props;
     var taskDesc = form.getFieldValue('todoTask');
-    if(taskDesc.length > 0) {
+    if(taskDesc && taskDesc.length > 0) {
       this.sendData(taskDesc);
       form.resetFields();
+
+      fetch('http://localhost:8080/test', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          todoText: taskDesc,
+        }),
+      });
     }
     e.preventDefault();
   }
@@ -27,7 +36,7 @@ class TodoForm extends Component{
           {getFieldDecorator('todoTask',{
             rules: [{required: false}],
           })(
-          <Input name='todoTask' placeholder='Please, enter your worries.' />
+          <Input placeholder='Please, enter your worries.' />
           )}        
         </Form.Item>
         <Form.Item>

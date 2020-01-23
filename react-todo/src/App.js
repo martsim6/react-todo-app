@@ -2,7 +2,6 @@ import React,{Component} from 'react';
 import {Layout, Form, List, Button } from 'antd';
 import './App.css';
 import TodoForm from './Form';
-
 const { Header, Content, Footer } = Layout;
 const FillingForm = Form.create({})(TodoForm);
 
@@ -11,11 +10,10 @@ class App extends Component {
 	state = {
 		todoList:[],
 	}
-	componentDidMount(){
-		fetch('/users')
-			.then(res => res.json())
-			.then(users => this.setState({ users }));
-	}
+	// componentDidMount(){
+	// 	fetch('/users')
+	// 		.then(res => res.json())
+	// }
 	callBackFunction = (childData) => {
 		this.setState({
 			todoList:[...this.state.todoList, childData]
@@ -36,11 +34,11 @@ class App extends Component {
 					<Content className='content'>
 						<FillingForm parentCallback = {this.callBackFunction} />
 					</Content>
-					<Footer>
+					<Footer className='footer'>
 						<List
+							size='small'
 							bordered
 							dataSource={this.state.todoList}
-							kexExtractor={item=>item.id}
 							renderItem={(item, index) => (
 								<List.Item>
 									{item}
