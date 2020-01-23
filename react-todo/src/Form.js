@@ -14,7 +14,7 @@ class TodoForm extends Component{
       this.sendData(taskDesc);
       form.resetFields();
 
-      fetch('http://localhost:8080/test', {
+      fetch('http://localhost:8080/task/add', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
