@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const cors = require('cors');
+
 const app = express();
 
 const knex = require('knex') ({
@@ -25,36 +26,21 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 app.use(cors());
 
-app.post('/test', function(req, res){
-	console.log(req.body['todoText']);
-	// new Tasks({text: req.body['todoText']}).save()
-	res.send('lacko');
+app.post('/task/add', (req, res) => {
+	const newText = req.body;
+	console.log(newText['todoText']);
+	// new Tasks({text: newText['todoText']}).save();
 })
 
-app.get('/task/add', (req, res) => {
-	const { text } = req.query;
-	console.log(text);
+app.get('/tasks', (req, res) => {
+	Tasks.fetchAll().then(function (resData) {
+		console.log(resData.toJSON())
+		return res.json({data: resData});
+	})
 })
 
-// Tasks.count().then((count) => {
-// 	console.log(`mas tam ${count} taskov`);
-// }).catch((err) =>{
-// 	console.log(err);
-// }).finally(() => {
-// 	knex.destroy();
-// });
-
-// async function fetch_all() {
-// 	try {
-// 		let vals = await Tasks.fetchAll();
-// 		console.log(vals.toJSON());
-// 	} catch(e) {
-// 		console.log(`Failed to fetch data: ${e}`);
-// 	} finally {
-// 		knex.destroy();
-// 	}
-// }
-// fetch_all();
-app.listen(process.env.PORT || 8080);
-
+// app.delete('/task/delete', function(req, res, next) => {
+// 	Tasks.forge()
+// })
+app.listen(8080);
 console.log('start');

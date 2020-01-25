@@ -22,7 +22,7 @@ class TodoForm extends Component{
         },
         body: JSON.stringify({
           todoText: taskDesc,
-        }),
+        })
       });
     }
     e.preventDefault();
