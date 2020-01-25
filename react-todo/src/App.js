@@ -9,11 +9,11 @@ class App extends Component {
 
 	state = {
 		todoList:[],
+		lackoList: []
 	}
-	// componentDidMount(){
-	// 	fetch('/users')
-	// 		.then(res => res.json())
-	// }
+	componentDidMount(){
+		this.getTasks();
+	}
 	callBackFunction = (childData) => {
 		this.setState({
 			todoList:[...this.state.todoList, childData]
@@ -22,9 +22,20 @@ class App extends Component {
 	deleteTodoTask = (event, uid) => {
 		var taskArray = [...this.state.todoList]
 		taskArray.splice(uid, 1)
-		this.setState({todoList:taskArray})
+		// this.setState({todoList:taskArray})
 	}
-	
+	getTasks = _ => {
+		fetch('http://localhost:8080/tasks', {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      }
+    })
+    	.then(response => response.json())
+    	.then(response => this.setState({ lackoList: response.data}))
+    	.catch(err => console.error(err));
+	}	
 	render(){
     return (
     	<div className='App'>
@@ -39,10 +50,10 @@ class App extends Component {
 						<List
 							size='small'
 							bordered
-							dataSource={this.state.todoList}
+							dataSource={this.state.lackoList}
 							renderItem={(item, index) => (
 								<List.Item>
-									{item}
+									{item.text} {item.id}
 									<Button type='danger' onClick={(event) => {this.deleteTodoTask(event, index)}}>
 										Delete
 									</Button>
