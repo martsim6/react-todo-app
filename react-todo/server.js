@@ -26,21 +26,24 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 app.use(cors());
 
-app.post('/task/add', (req, res) => {
+app.post('/task', (req, res) => {
 	const newText = req.body;
 	console.log(newText['todoText']);
-	// new Tasks({text: newText['todoText']}).save();
+	new Tasks({text: newText['todoText']}).save();
 })
 
-app.get('/tasks', (req, res) => {
+app.get('/task', (req, res) => {
 	Tasks.fetchAll().then(function (resData) {
-		console.log(resData.toJSON())
+		// console.log(resData.toJSON())
 		return res.json({data: resData});
 	})
 })
 
-// app.delete('/task/delete', function(req, res, next) => {
-// 	Tasks.forge()
-// })
+app.delete('/task/:id', async (req, res) => {
+	var task = await Tasks.where('id', req.params.id).destroy();
+	res.json(task);
+
+});
+
 app.listen(8080);
 console.log('start');

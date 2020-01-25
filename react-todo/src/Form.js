@@ -3,18 +3,17 @@ import React, { Component } from 'react';
 
 class TodoForm extends Component{
 
-  sendData = (message) => {
-    this.props.parentCallback(message);
+  sendData = () => {
+    this.props.parentCallback();
   }
 
   handleSubmit = (e) => {
     const { form } = this.props;
     var taskDesc = form.getFieldValue('todoTask');
     if(taskDesc && taskDesc.length > 0) {
-      this.sendData(taskDesc);
       form.resetFields();
 
-      fetch('http://localhost:8080/task/add', {
+      fetch('http://localhost:8080/task', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -26,6 +25,7 @@ class TodoForm extends Component{
       });
     }
     e.preventDefault();
+    this.sendData();
   }
 
   render() {
