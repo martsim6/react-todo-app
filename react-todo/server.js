@@ -26,21 +26,44 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 app.use(cors());
 
-app.post('/task/add', (req, res) => {
+app.post('/task', (req, res) => {
 	const newText = req.body;
 	console.log(newText['todoText']);
 	// new Tasks({text: newText['todoText']}).save();
 })
 
-app.get('/tasks', (req, res) => {
+app.get('/task', (req, res) => {
 	Tasks.fetchAll().then(function (resData) {
 		console.log(resData.toJSON())
 		return res.json({data: resData});
 	})
 })
 
-// app.delete('/task/delete', function(req, res, next) => {
-// 	Tasks.forge()
-// })
+app.delete('/task/text', (req, res) => {
+	Tasks.forge({text: req.body.id })
+		.fetch({require: true})
+		.then(function (task) {
+			if(!tasks) {
+				console.log('penis')
+				return res.status(404).json({error: true, message: 'task not found'});
+			}
+			console.log('pussy')
+			task.destroy()
+			return res.json({error: false, message: 'task deleted'});
+		}).catch(function (err) {
+			console.log('juice')
+			res.status(500).json({error: true, data: {message: err.message}});
+	});
+	
+
+	// Tasks.remove({
+	// 	_id: req.body.id
+	// }, function (err, task) {
+	// 	if (err)
+	// 		res.send(err);
+	// 	res.json({message: 'Task successfully deleted'});
+	// });
+});
+
 app.listen(8080);
 console.log('start');

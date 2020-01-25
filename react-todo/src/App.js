@@ -14,18 +14,21 @@ class App extends Component {
 	componentDidMount(){
 		this.getTasks();
 	}
-	callBackFunction = (childData) => {
-		this.setState({
-			todoList:[...this.state.todoList, childData]
+
+	callBackFunction = () => {
+		this.getTasks();
+	}
+
+	deleteTask = (text) => {
+		fetch(`http://localhost:8080/task/text=${text}`, {
+			method: 'DELETE'
 		})
+			.then(this.getTasks())
+			.catch(err => console.log(err))
 	}
-	deleteTodoTask = (event, uid) => {
-		var taskArray = [...this.state.todoList]
-		taskArray.splice(uid, 1)
-		// this.setState({todoList:taskArray})
-	}
+
 	getTasks = _ => {
-		fetch('http://localhost:8080/tasks', {
+		fetch('http://localhost:8080/task', {
       method: 'GET',
       headers: {
         Accept: 'application/json',
@@ -54,7 +57,7 @@ class App extends Component {
 							renderItem={(item, index) => (
 								<List.Item>
 									{item.text} {item.id}
-									<Button type='danger' onClick={(event) => {this.deleteTodoTask(event, index)}}>
+									<Button type='danger' onClick={(event) => {this.deleteTask(item.text)}}>
 										Delete
 									</Button>
 								</List.Item>)}
