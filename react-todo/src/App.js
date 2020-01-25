@@ -19,8 +19,8 @@ class App extends Component {
 		this.getTasks();
 	}
 
-	deleteTask = (text) => {
-		fetch(`http://localhost:8080/task/text=${text}`, {
+	deleteTask = (id) => {
+		fetch(`http://localhost:8080/task/${id}`, {
 			method: 'DELETE'
 		})
 			.then(this.getTasks())
@@ -57,7 +57,7 @@ class App extends Component {
 							renderItem={(item, index) => (
 								<List.Item>
 									{item.text} {item.id}
-									<Button type='danger' onClick={(event) => {this.deleteTask(item.text)}}>
+									<Button type='danger' onClick={(event) => {this.deleteTask(item.id)}}>
 										Delete
 									</Button>
 								</List.Item>)}
