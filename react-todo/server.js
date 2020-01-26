@@ -29,13 +29,13 @@ app.use(cors());
 app.post('/task', (req, res) => {
 	const newText = req.body;
 	console.log(newText['todoText']);
-	new Tasks({text: newText['todoText']}).save();
+	new Tasks({text: newText['todoText'], done: 'false'}).save();
 })
 
 app.get('/task', (req, res) => {
-	Tasks.fetchAll().then(function (resData) {
-		// console.log(resData.toJSON())
-		return res.json({data: resData});
+	Tasks.where({done: 'false'}).fetchAll().then(function (resData) {
+		console.log(resData.toJSON())
+		return res.json({data: resData})
 	})
 })
 
@@ -45,5 +45,20 @@ app.delete('/task/:id', async (req, res) => {
 
 });
 
+app.post('/task/:id', async (req, res) => {
+	var taskUpdate = await Tasks.where('id', req.params.id)
+		.save(
+			{done: 'true'},
+			{method: 'update', patch: true}
+		)
+})
+
+app.get('/task/done', (req, res) => {
+	Tasks.where({done: 'true'}).fetchAll().then(function (resData) {
+		console.log(resData.toJSON())
+		console.log('----------------------------')
+		return res.json({data: resData})
+	})
+})
 app.listen(8080);
 console.log('start');

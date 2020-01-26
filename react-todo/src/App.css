@@ -21,11 +21,27 @@
   margin: 2rem 0;
 }
 .footer{
-  width: 35%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
 }
 .footer li{
   text-align: left;
 }
 .footer button{
-  align-content: 
+  align-content: center;
+  float: right;
+  margin: 0.1rem 0.25rem;
+}
+.todoTasks {
+  width: 100%;
+}
+.todoTasks h2{
+  color: red;
+}
+.doneTasks{
+  width: 100%;
+}
+.doneTasks h2 {
+  color: green;
 }
