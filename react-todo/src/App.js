@@ -1,36 +1,36 @@
-import React,{Component} from 'react';
+import React from 'react';
 import {Layout, Form, List, Button } from 'antd';
 import './App.css';
 import TodoForm from './Form';
 const { Header, Content, Footer } = Layout;
 const FillingForm = Form.create({})(TodoForm);
 
-class App extends Component {
+function App(props){
+	
+	const [todoList, setTodoList] = React.useState([]);
+	const [doneList, setDoneList] = React.useState([]);
+	
+	React.useEffect(() => {
+		getTasks();
+		getDoneTasks();
+		console.log('aaaaaaaa')
+	}, [])
 
-	state = {
-		lackoList: [],
-		doneList: []
-	}
-	componentDidMount(){
-		this.getTasks();
-		this.getDoneTasks();
+	const callBackFunction = () => {
+		getTasks();
+		getDoneTasks();
 	}
 
-	callBackFunction = () => {
-		this.getTasks();
-		this.getDoneTasks();
-	}
-
-	deleteTask = (id) => {
+	const deleteTask = (id) => {
 		fetch(`http://localhost:8080/task/${id}`, {
 			method: 'DELETE'
 		})
-			.then(this.getTasks())
-			.then(this.getDoneTasks())
+			.then(getTasks())
+			.then(getDoneTasks())
 			.catch(err => console.log(err))
 	}
 
-	getTasks = _ => {
+	const getTasks = _ => {
 		fetch('http://localhost:8080/task', {
       method: 'GET',
       headers: {
@@ -39,11 +39,11 @@ class App extends Component {
       }
     })
     	.then(response => response.json())
-    	.then(response => this.setState({ lackoList: response.data}))
+    	.then(response => setTodoList(response.data))
     	.catch(err => console.error(err));
 	}
 
-	getDoneTasks = _ => {
+	const getDoneTasks = _ => {
 		fetch('http://localhost:8080/task/done', {
 			method: "GET",
 			headers: {
@@ -52,72 +52,88 @@ class App extends Component {
       }
 		})
 			.then(response => response.json())
-			.then(response => this.setState({doneList: response.data}))
-			.then(this.getTasks())
+			.then(response => setDoneList(response.data))
+			.then(getTasks())
 			.catch(err => console.error(err));
 	}
 
-	markTaskAsDone = (id) => {
+	const markTaskAsDone = (id) => {
 		fetch(`http://localhost:8080/task/${id}`, {
-			method: 'POST',
+			method: 'PUT',
 			headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       }
 		})
-			.then(this.getDoneTasks())
-			.then(this.getTasks())
+			.then(getDoneTasks())
+			.then(getTasks())
 			.catch(err => console.log(err))
 	}
-	render(){
-    return (
-    	<div className='App'>
-				<Layout className='layout'>
-					<Header className='header'>
-						<h1 className='title'> Todo App</h1>
-					</Header>
-					<Content className='content'>
-						<FillingForm parentCallback = {this.callBackFunction} />
-					</Content>
-					<Footer className='footer'>
-						<div className='todoTasks'>
-							<h2> Todo List </h2>
-							<List
-								grid={{gutter: 16, column: 1}}
-								size='small'
-								bordered
-								dataSource={this.state.lackoList}
-								renderItem={(item, index) => (
-									<List.Item>
-										{item.text}
-										<Button type='primary' onClick={(event) => {this.markTaskAsDone(item.id)}}> Done </Button>
-										<Button type='danger' onClick={(event) => {this.deleteTask(item.id)}}>
+  return (
+  	<div className='App'>
+			<Layout className='layout'>
+				<Header className='header'>
+					<h1 className='title'> Todo App</h1>
+				</Header>
+				<Content className='content'>
+					<FillingForm parentCallback = {callBackFunction} />
+				</Content>
+				<Footer className='footer'>
+					<div className='tasks'>
+						<h2 className='todo'> Todo List </h2>
+						<List
+							size='small'
+							bordered
+							dataSource={todoList}
+							renderItem={(item, index) => (
+								<List.Item >
+									<div className='item'>
+									{item.text}
+									</div>
+									<div className='action-buttons'>
+										<Button type='primary' onClick={(event) => {
+											markTaskAsDone(item.id)
+											getTasks()
+											getDoneTasks()
+										}}> Done </Button>
+										<Button type='danger' onClick={(event) => {
+											deleteTask(item.id)
+											getTasks()
+											getDoneTasks()
+										}}>
 											Delete
 										</Button>
-									</List.Item>)}
-							/>
-						</div>
-						<div className='doneTasks'>
-							<h2>Done List</h2>
-							<List
-								grid={{gutter: 16, column: 1}}
-								size='small'
-								bordered
-								dataSource={this.state.doneList}
-								renderItem={(item, index) => (
-									<List.Item>
+									</div>
+								</List.Item>)}
+						/>
+					</div>
+					<div className='tasks'>
+						<h2 className='done'>Done List</h2>
+						<List
+							size='small'
+							bordered
+							dataSource={doneList}
+							renderItem={(item, index) => (
+								<List.Item>
+									<div className='item'>
 										{item.text}
-										<Button type='danger' onClick={(event) => {this.deleteTask(item.id)}}>
+									</div>
+									<div className='action-buttons'>
+										<Button type='danger' onClick={(event) => {
+											deleteTask(item.id)
+											getTasks()
+											getDoneTasks()
+										}}>
 											Delete
 										</Button>
-									</List.Item>)}
-							/>
-						</div>
-					</Footer>
-				</Layout>   
-			</div>
-		);
-	}
+									</div>
+								</List.Item>)}
+						/>
+					</div>
+				</Footer>
+			</Layout>   
+		</div>
+	);
 }
 
 export default App;
