@@ -56,7 +56,7 @@ class App extends Component {
 							dataSource={this.state.lackoList}
 							renderItem={(item, index) => (
 								<List.Item>
-									{item.text} {item.id}
+									{item.text}
 									<Button type='danger' onClick={(event) => {this.deleteTask(item.id)}}>
 										Delete
 									</Button>
